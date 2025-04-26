@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Pgvector\Laravel\Vector;
 
@@ -23,4 +24,8 @@ class Embedding extends Model
     ];
 
     public static $_TYPE_TEXT = 1;
+
+    public function document() : BelongsTo {
+        return $this->belongsTo(Document::class);
+    }
 }

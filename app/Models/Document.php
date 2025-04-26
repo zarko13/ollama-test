@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
@@ -55,4 +56,9 @@ class Document extends Model
     public function getDisplayStatusAttribute(){
         return $this->getStatus();
     }
+
+    public function embeddings() : HasMany {
+        return $this->hasMany(Embedding::class);
+    }
+
 }
