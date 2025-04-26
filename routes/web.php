@@ -32,3 +32,10 @@ Route::get('document', [DocumentController::class, 'create']);
 Route::get('async/documents', [DocumentController::class, 'asyncDocuments']);
 Route::post('async/store-document', [DocumentController::class, 'asyncStoreDocument']);
 Route::post('async/delete-document', [DocumentController::class, 'asyncDeleteDocument']);
+
+Route::get('chats', [DocumentController::class, 'index']);
+Route::get('chat', [DocumentController::class, 'create']);
+Route::get('chat/{id}', [DocumentController::class, 'show']);
+Route::get('async/chats', [DocumentController::class, 'asyncChats']);
+Route::post('async/store-chat', [DocumentController::class, 'asyncStoreChat']);
+Route::post('async/close-chat', [DocumentController::class, 'asyncCloseChat']);
