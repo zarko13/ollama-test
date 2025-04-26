@@ -34,6 +34,30 @@ class OllamaService
 
     }
 
+    public static function generateEmbeddings($chunks){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            $response = OllamaLibrary::generateEmbeddings($chunks);
+            if(!$response['success']){
+                return new ServiceResponse(['Failed to generate embeddings'], $data);
+            }
+
+
+            $data['embeddings'] = $response['body']['embeddings'];
+
+        } catch (Exception $error) {
+            Log::error('Failed to generate embeddings.Error:'.$error);
+            $errors[] = 'Failed to generate embeddings';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
 
 
 }

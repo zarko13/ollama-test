@@ -35,6 +35,22 @@ class OllamaLibrary
         return self::processResponse($response);
     }
 
+    public static function generateEmbeddings($chunks){
+
+        $api = new self();
+        $fullUrl = $api->apiUrl . 'chat';
+
+        $data = [
+            'model' => $api->model,
+            'input' => $chunks,
+        ];
+
+
+        $response = Http::post($fullUrl, $data);
+
+        return self::processResponse($response);
+    }
+
     private static function processResponse($response, $log = true){
         if($log){
             Log::info('Ollama library response:'. $response->body());
