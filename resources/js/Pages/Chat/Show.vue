@@ -66,6 +66,7 @@ export default {
     components: { AuthenticatedLayout, Head },
     mounted: async function () {
         this.chatMessages = this.messages;
+        this.subscribeToMessages();
     },
     methods: {
         storeMessage: async function () {
@@ -89,9 +90,9 @@ export default {
         },
         subscribeToMessages: async function () {
             window.Echo.channel('chat-' + this.chat.id)
-                .listen('.new-message', (message) => {
-                    console.log(message)
-                })
+                        .listen('.new-message', (event) => {
+                            this.messages.push(event.message);
+                        })
         },
     },
 
