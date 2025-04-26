@@ -38,6 +38,8 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                 </th>
+                                <th scope="col" class="px-6 py-3">
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,7 +50,12 @@
                                     {{ document.name }}
                                 </th>
                                 <td class="px-6 py-4">
-
+                                    <a target="_blank" :href="document.display_path">
+                                        <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Download</button>
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button @click="deleteDocument(document)" type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Delete</button>
                                 </td>
                             </tr>
 
@@ -140,6 +147,23 @@ export default {
             this.setFirstPage();
             this.addFilter(e.target.name, e.target.value);
         }, 500),
+
+        deleteDocument: async function (document) {
+            await axios({
+                method: "POST",
+                data: {
+                    reference : document.id
+                },
+                url: "/async/delete-document",
+            }).then((response) => {
+                this.setFirstPage();
+                this.loadData();
+            }).catch((error) => {
+                for (let index = 0; index < error.response.data.length; index++) {
+                    this.$toast.error(error.response.data[index]);
+                }
+            });
+        },
     },
 
 
