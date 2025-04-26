@@ -19,8 +19,8 @@ class ChatMessage extends Model
     public static $_TYPE_BY_USER = 1;
     public static $_TYPE_BY_SYSTEM = 2;
 
-    public function scopeLatestById($query){
-        return $query->orderBy('id', 'desc');
+    public function scopeOldestById($query){
+        return $query->orderBy('id', 'asc');
     }
 
     public function chat() : BelongsTo {

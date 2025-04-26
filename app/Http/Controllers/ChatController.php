@@ -26,7 +26,7 @@ class ChatController extends BaseAppController
 
         $data = [
             'chat' => $chat,
-            'messages' => $chat->messages()->latestById()->get()
+            'messages' => $chat->messages()->oldestById()->get()
         ];
         return Inertia::render('Chat/Show', $data);
     }

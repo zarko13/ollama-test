@@ -78,7 +78,10 @@ export default {
                 },
                 url: "/async/store-message",
             }).then((response) => {
-                this.chatMessages.push(this.message);
+                this.chatMessages.push({
+                    content : this.message,
+                    is_by_user : true
+                });
                 this.message = null;
                 this.submitting = false;
             }).catch((error) => {
