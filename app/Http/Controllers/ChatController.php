@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\StoreMessageRequest;
 use App\Models\Chat;
-use App\Models\ChatMessage;
 use App\Repositories\Chat\ChatService;
 use App\Repositories\ServiceResponse;
 use Illuminate\Http\Request;
@@ -63,7 +62,7 @@ class ChatController extends BaseAppController
         $chat = $this->user->chats()->findOrFail($request->input('reference'));
         $message = $request->input('message');
 
-        $response = ChatService::storeChatMessage($chat, $message, ChatMessage::$_TYPE_BY_USER);
+        $response = ChatService::storeUserChatMessage($chat, $message);
 
         return $response->toAsyncResponse();
     }

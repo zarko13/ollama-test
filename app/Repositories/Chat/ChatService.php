@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Chat;
 
+use App\Events\ChatMessageCreated;
 use App\Models\Chat;
 use App\Models\ChatMessage;
 use App\Models\User;
@@ -64,40 +65,62 @@ class ChatService
 
     }
 
-    public static function storeChatMessage(Chat $chat, $message, $type){
+    public static function storeUserChatMessage(Chat $chat, $message){
 
         $errors = null;
         $data = [];
 
         try {
 
-            if($type == ChatMessage::$_TYPE_BY_USER && !$chat->isOpen()){
+            if(!$chat->isOpen()){
                 return new ServiceResponse(['Chat is not open'], $data);
             }
 
-            DB::beginTransaction();
-
-            ChatMessage::create([
+            $message = ChatMessage::create([
                 'chat_id' => $chat->id,
-                'type' => $type,
+                'type' => ChatMessage::$_TYPE_BY_USER,
                 'content' => $message
             ]);
 
-            $message = OllamaService::sendChatMessage($chat)->returnOrFail()->data['message'];
+            event(new ChatMessageCreated($message));
 
-            ChatMessage::create([
-                'chat_id' => $chat->id,
-                'type' => ChatMessage::$_TYPE_BY_SYSTEM,
-                'content' => $message
-            ]);
-
-            DB::commit();
-
-            $data['message'] = $message;
+            $data['success'] = true;
         } catch (Exception $error) {
             DB::rollBack();
-            Log::error('Failed to store chat message.Error:'.$error);
+            Log::error('Failed to store user chat message.Error:'.$error);
             $errors[] = 'Failed to store chat message';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
+    public static function processNewChatMessage(ChatMessage $message){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            if($message->type == ChatMessage::$_TYPE_BY_SYSTEM){
+                return new ServiceResponse($errors, ['success' => true]);
+            }
+
+            $systemMessage = OllamaService::sendChatMessage($message->chat)->returnOrFail()->data['message'];
+
+
+            $chatMessage = ChatMessage::create([
+                'chat_id' => $message->chat_id,
+                'type' => ChatMessage::$_TYPE_BY_SYSTEM,
+                'content' => $systemMessage
+            ]);
+
+            event(new ChatMessageCreated($chatMessage));
+
+            $data['success'] = true;
+        } catch (Exception $error) {
+            Log::error('Failed to process new chat message.Error:'.$error);
+            $errors[] = 'Failed to process new chat message';
         }
 
         return new ServiceResponse($errors, $data);
