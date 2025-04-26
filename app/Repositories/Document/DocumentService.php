@@ -23,7 +23,8 @@ class DocumentService
 
             $document = Document::create([
                 'name' => $name,
-                'path' => $path
+                'path' => $path,
+                'status' => Document::$_STATUS_PENDING
             ]);
 
 

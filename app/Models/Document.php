@@ -12,8 +12,27 @@ class Document extends Model
 
     protected $fillable = [
         'name',
-        'path'
+        'path',
+        'status'
     ];
+
+    public static $_STATUS_PENDING = 1;
+    public static $_STATUS_PROCESSING = 2;
+    public static $_STATUS_FAILED = 3;
+    public static $_STATUS_PROCESSED = 4;
+
+    public static function getStatuses(){
+        return [
+            self::$_STATUS_PENDING => 'Pending',
+            self::$_STATUS_PROCESSING => 'Processing',
+            self::$_STATUS_FAILED => 'Failed',
+            self::$_STATUS_PROCESSED => 'Processed'
+        ];
+    }
+
+    public function getStatus(){
+        return self::getStatuses()[$this->status];
+    }
 
 
     public function scopeLatestById($query){
@@ -24,11 +43,16 @@ class Document extends Model
         $data = parent::toArray();
 
         $data['display_path'] = $this->getDisplayPathAttribute();
+        $data['display_status'] = $this->getDisplayStatusAttribute();
 
         return $data;
     }
 
     public function getDisplayPathAttribute(){
         return Storage::url($this->path);
+    }
+
+    public function getDisplayStatusAttribute(){
+        return $this->getStatus();
     }
 }
