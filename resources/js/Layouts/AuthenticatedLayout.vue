@@ -47,6 +47,13 @@ const showingNavigationDropdown = ref(false);
                                     Documents
                                 </NavLink>
 
+                                <NavLink
+                                    href="/chats"
+                                    :active="false"
+                                >
+                                    Chats
+                                </NavLink>
+
                             </div>
                         </div>
 
