@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Ollama;
 
-use App\Models\ChatMessage;
+use App\Models\Chat;
 use App\Repositories\ServiceResponse;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -10,20 +10,20 @@ use Illuminate\Support\Facades\Log;
 class OllamaService
 {
 
-    public static function sendChatMessage(ChatMessage $message){
+    public static function sendChatMessage(Chat $chat){
 
         $errors = null;
         $data = [];
 
         try {
 
-            $response = OllamaLibrary::sendChatMessage($message);
+            $response = OllamaLibrary::sendChatMessage($chat);
             if(!$response['success']){
                 return new ServiceResponse(['Failed to send chat message'], $data);
             }
 
 
-            $data['body'] = $response['body'];
+            $data['message'] = $response['body']['message']['content'];
 
         } catch (Exception $error) {
             Log::error('Failed to send chat message.Error:'.$error);

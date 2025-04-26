@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Repositories\Ollama\OllamaService;
 use App\Repositories\ServiceResponse;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ChatService
@@ -74,19 +75,27 @@ class ChatService
                 return new ServiceResponse(['Chat is not open'], $data);
             }
 
+            DB::beginTransaction();
 
-            $chatMessage = ChatMessage::create([
+            ChatMessage::create([
                 'chat_id' => $chat->id,
                 'type' => $type,
                 'content' => $message
             ]);
 
-            OllamaService::sendChatMessage($chatMessage);
+            $message = OllamaService::sendChatMessage($chat)->returnOrFail()->data['message'];
 
+            ChatMessage::create([
+                'chat_id' => $chat->id,
+                'type' => ChatMessage::$_TYPE_BY_SYSTEM,
+                'content' => $message
+            ]);
 
-            $data['message'] = $chatMessage;
+            DB::commit();
 
+            $data['message'] = $message;
         } catch (Exception $error) {
+            DB::rollBack();
             Log::error('Failed to store chat message.Error:'.$error);
             $errors[] = 'Failed to store chat message';
         }

@@ -83,6 +83,12 @@ export default {
                     is_by_user : true
                 });
                 this.message = null;
+
+                this.chatMessages.push({
+                    content : response.data.message,
+                    is_by_user : false
+                });
+                this.message = null;
                 this.submitting = false;
             }).catch((error) => {
                 this.submitting = false;

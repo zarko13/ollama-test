@@ -2,9 +2,7 @@
 
 namespace App\Repositories\Ollama;
 
-use App\Models\ChatMessage;
-use App\Repositories\ServiceResponse;
-use Exception;
+use App\Models\Chat;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -19,14 +17,14 @@ class OllamaLibrary
         $this->model = config('ollama.model');
     }
 
-    public static function sendChatMessage(ChatMessage $message){
+    public static function sendChatMessage(Chat $chat){
 
         $api = new self();
         $fullUrl = $api->apiUrl . 'chat';
 
         $data = [
             'model' => $api->model,
-            'messages' => $message->chat->getFormattedMessageHistory(),
+            'messages' => $chat->getFormattedMessageHistory(),
             "stream" => false,
         ];
 
