@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('documents', [DocumentController::class, 'index']);
+Route::get('document', [DocumentController::class, 'create']);
 Route::get('async/documents', [DocumentController::class, 'asyncDocuments']);
 Route::post('async/store-document', [DocumentController::class, 'asyncStoreDocument']);
 Route::post('async/delete-document', [DocumentController::class, 'asyncDeleteDocument']);

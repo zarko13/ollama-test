@@ -48,7 +48,7 @@
                                     {{ document.name }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    
+
                                 </td>
                             </tr>
 
@@ -113,7 +113,7 @@ export default {
         },
 
         loadData() {
-            this.getPartners();
+            this.getDocuments();
         },
 
         addFilter(key, value) {
