@@ -3,6 +3,7 @@
 namespace App\Repositories\Chat;
 
 use App\Models\Chat;
+use App\Models\ChatMessage;
 use App\Models\User;
 use App\Repositories\ServiceResponse;
 use Exception;
@@ -55,6 +56,36 @@ class ChatService
         } catch (Exception $error) {
             Log::error('Failed to close chat.Error:'.$error);
             $errors[] = 'Failed to close chat';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
+    public static function storeChatMessage(Chat $chat, $message, $type){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            if($type == ChatMessage::$_TYPE_BY_USER && !$chat->isOpen()){
+                return new ServiceResponse(['Chat is not open'], $data);
+            }
+
+
+            $chatMessage = ChatMessage::create([
+                'chat_id' => $chat->id,
+                'type' => $type,
+                'content' => $message
+            ]);
+
+
+            $data['message'] = $chatMessage;
+
+        } catch (Exception $error) {
+            Log::error('Failed to store chat message.Error:'.$error);
+            $errors[] = 'Failed to store chat message';
         }
 
         return new ServiceResponse($errors, $data);
