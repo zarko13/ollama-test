@@ -61,4 +61,25 @@ class DocumentService
 
     }
 
+    public static function generateEmbeddings(){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+
+
+
+            $data['success'] = true;
+
+        } catch (Exception $error) {
+            Log::error('Failed to generate embeddings.Error:'.$error);
+            $errors[] = 'Failed to generate embeddings';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
 }
