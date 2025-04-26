@@ -16,13 +16,11 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('document_id');
             $table->integer('type');
-            $table->vector('embedding', 1536);
+            $table->vector('embedding', 2048);
             $table->json('metadata');
             $table->timestamps();
             $table->softDeletes();
         });
-
-        DB::statement('CREATE INDEX my_index ON embeddings USING ivfflat (embedding vector_l2_ops) WITH (lists = 100)');
     }
 
     /**

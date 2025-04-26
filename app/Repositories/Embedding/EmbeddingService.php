@@ -5,6 +5,7 @@ namespace App\Repositories\Embedding;
 
 use App\Models\Document;
 use App\Models\Embedding;
+use App\Repositories\Ollama\OllamaService;
 use App\Repositories\ServiceResponse;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class EmbeddingService
 
 
             $chunks = self::chunkDocument($document)->returnOrFail()->data['chunks'];
-            $embeddings = [];
+            $embeddings = OllamaService::generateEmbeddings($chunks)->data['embeddings'];
 
             DB::beginTransaction();
 

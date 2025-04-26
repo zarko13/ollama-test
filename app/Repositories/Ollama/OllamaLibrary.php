@@ -38,7 +38,7 @@ class OllamaLibrary
     public static function generateEmbeddings($chunks){
 
         $api = new self();
-        $fullUrl = $api->apiUrl . 'chat';
+        $fullUrl = $api->apiUrl . 'embed';
 
         $data = [
             'model' => $api->model,
@@ -46,7 +46,7 @@ class OllamaLibrary
         ];
 
 
-        $response = Http::post($fullUrl, $data);
+        $response = Http::timeout(600)->post($fullUrl, $data);
 
         return self::processResponse($response);
     }
