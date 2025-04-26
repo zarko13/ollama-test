@@ -28,3 +28,4 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('documents', [DocumentController::class, 'index']);
+Route::get('async/documents', [DocumentController::class, 'asyncDocuments']);

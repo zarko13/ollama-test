@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DocumentController extends BaseAppController
@@ -11,9 +13,20 @@ class DocumentController extends BaseAppController
         return Inertia::render('Document/Index');
     }
 
-    public function create()
-    {
-        //
+    public function create(){
+        return Inertia::render('Document/Create');
+    }
+
+    public function asyncDocuments(Request $request){
+        $query = Document::latestById();
+
+        if($request->filled('name')){
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        $response = new ServiceResponse(null, ['documents' => $query->paginate()]);
+
+        return $response->toAsyncResponse();
     }
 
 }
