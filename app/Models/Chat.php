@@ -31,6 +31,10 @@ class Chat extends Model
         return self::getStatuses()[$this->status];
     }
 
+    public function isOpen(){
+        return $this->status == self::$_STATUS_OPEN;
+    }
+
     public function scopeLatestById($query){
         return $query->orderBy('id', 'desc');
     }
@@ -39,6 +43,7 @@ class Chat extends Model
         $data = parent::toArray();
 
         $data['display_status'] = $this->getDisplayStatusAttribute();
+        $data['is_open'] = $this->getIsOpenAttribute();
 
         return $data;
     }
@@ -53,5 +58,9 @@ class Chat extends Model
 
     public function messages() : HasMany {
         return $this->hasMany(ChatMessage::class);
+    }
+
+    public function getIsOpenAttribute(){
+        return $this->isOpen();
     }
 }

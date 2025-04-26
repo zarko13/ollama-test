@@ -40,3 +40,4 @@ Route::get('chat/{id}', [ChatController::class, 'show']);
 Route::get('async/chats', [ChatController::class, 'asyncChats']);
 Route::post('async/store-chat', [ChatController::class, 'asyncStoreChat']);
 Route::post('async/close-chat', [ChatController::class, 'asyncCloseChat']);
+Route::post('async/store-message', [ChatController::class, 'asyncCloseChat']);
