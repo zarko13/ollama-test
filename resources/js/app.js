@@ -9,6 +9,22 @@ import VueUrlParams from "./lib/vue-url-params";
 import VueAwesomePaginate from "vue-awesome-paginate";
 import Toaster from "@meforma/vue-toaster";
 import "vue-awesome-paginate/dist/style.css";
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+const reverbKey = import.meta.env.VITE_REVERB_APP_KEY || 'xzg2piyb38ghrba9w0lf';
+const reverbHost = import.meta.env.VITE_REVERB_HOST || 'localhost';
+
+window.Pusher = Pusher;
+window.Echo = new Echo({
+    broadcaster: 'reverb',
+    key: reverbKey,
+    wsHost: reverbHost,
+    wsPort: 9000,
+    wssPort: 9000,
+    forceTLS: false,
+    enabledTransports: ['ws', 'wss'],
+});
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

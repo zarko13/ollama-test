@@ -78,16 +78,6 @@ export default {
                 },
                 url: "/async/store-message",
             }).then((response) => {
-                this.chatMessages.push({
-                    content : this.message,
-                    is_by_user : true
-                });
-                this.message = null;
-
-                this.chatMessages.push({
-                    content : response.data.message,
-                    is_by_user : false
-                });
                 this.message = null;
                 this.submitting = false;
             }).catch((error) => {
@@ -96,6 +86,12 @@ export default {
                     this.$toast.error(error.response.data[index]);
                 }
             });
+        },
+        subscribeToMessages: async function () {
+            window.Echo.channel('chat-' + this.chat.id)
+                .listen('.new-message', (message) => {
+                    console.log(message)
+                })
         },
     },
 
