@@ -48,7 +48,7 @@ export default {
             await axios({
                 method: "POST",
                 data: {
-                    name : name
+                    name : this.name
                 },
                 url: "/async/store-chat",
             }).then((response) => {

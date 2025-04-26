@@ -22,7 +22,11 @@ class ChatController extends BaseAppController
     public function show($id){
         $chat = $this->user->chats()->findOrFail($id);
 
-        return Inertia::render('Chat/Show', ['chat' => $chat]);
+        $data = [
+            'chat' => $chat,
+            'messages' => $chat->messages()->latestById()->get()
+        ];
+        return Inertia::render('Chat/Show', $data);
     }
 
     public function asyncChats(Request $request){

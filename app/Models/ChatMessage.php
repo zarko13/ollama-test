@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ChatMessages extends Model
+class ChatMessage extends Model
 {
     use SoftDeletes;
 
@@ -18,6 +18,10 @@ class ChatMessages extends Model
 
     public static $_TYPE_BY_USER = 1;
     public static $_TYPE_BY_SYSTEM = 2;
+
+    public function scopeLatestById($query){
+        return $query->orderBy('id', 'desc');
+    }
 
     public function chat() : BelongsTo {
         return $this->belongsTo(Chat::class);
