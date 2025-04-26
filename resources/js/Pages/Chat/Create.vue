@@ -50,9 +50,9 @@ export default {
                 data: {
                     name : name
                 },
-                url: "/async/chat",
+                url: "/async/store-chat",
             }).then((response) => {
-                window.location = '/chats/' + response.data.chat.id;
+                window.location = '/chat/' + response.data.chat.id;
                 this.$toast.success('New chat created.');
             }).catch((error) => {
                 this.submitting = false;
