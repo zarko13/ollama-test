@@ -32,7 +32,7 @@ class OllamaLibrary
 
         $response = Http::post($fullUrl, $data);
 
-        return self::processResponse($response);
+        return self::processResponse($response, false);
     }
 
     public static function generateEmbeddings($chunks){
@@ -48,7 +48,7 @@ class OllamaLibrary
 
         $response = Http::timeout(600)->post($fullUrl, $data);
 
-        return self::processResponse($response);
+        return self::processResponse($response, false);
     }
 
     private static function processResponse($response, $log = true){
