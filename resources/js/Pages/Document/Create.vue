@@ -41,7 +41,7 @@ import axios from 'axios';
 
 export default {
     data: () => ({
-        name: [],
+        name: null,
         file: null,
         submitting : false
     }),

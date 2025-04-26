@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +17,6 @@ class BaseAppController extends Controller implements HasMiddleware
     }
 
     public function __construct(){
-        $this->user = Auth::user();
+        $this->user = User::findOrFail(Auth::user()->id);
     }
 }

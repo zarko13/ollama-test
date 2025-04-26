@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -33,9 +34,9 @@ Route::get('async/documents', [DocumentController::class, 'asyncDocuments']);
 Route::post('async/store-document', [DocumentController::class, 'asyncStoreDocument']);
 Route::post('async/delete-document', [DocumentController::class, 'asyncDeleteDocument']);
 
-Route::get('chats', [DocumentController::class, 'index']);
-Route::get('chat', [DocumentController::class, 'create']);
-Route::get('chat/{id}', [DocumentController::class, 'show']);
-Route::get('async/chats', [DocumentController::class, 'asyncChats']);
-Route::post('async/store-chat', [DocumentController::class, 'asyncStoreChat']);
-Route::post('async/close-chat', [DocumentController::class, 'asyncCloseChat']);
+Route::get('chats', [ChatController::class, 'index']);
+Route::get('chat', [ChatController::class, 'create']);
+Route::get('chat/{id}', [ChatController::class, 'show']);
+Route::get('async/chats', [ChatController::class, 'asyncChats']);
+Route::post('async/store-chat', [ChatController::class, 'asyncStoreChat']);
+Route::post('async/close-chat', [ChatController::class, 'asyncCloseChat']);

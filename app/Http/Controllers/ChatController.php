@@ -3,63 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Repositories\ServiceResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class ChatController extends Controller
+class ChatController extends BaseAppController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        return Inertia::render('Chat/Index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create(){
+        return Inertia::render('Chat/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function show($id){
+        $chat = $this->user->chats()->findOrFail($id);
+
+        return Inertia::render('Chat/Show', ['chat' => $chat]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Chat $chat)
-    {
-        //
+    public function asyncChats(Request $request){
+        $query = Chat::latestById();
+
+        if($request->filled('name')){
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        $response = new ServiceResponse(null, ['chats' => $query->paginate()]);
+
+        return $response->toAsyncResponse();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Chat $chat)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Chat $chat)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Chat $chat)
-    {
-        //
-    }
 }
