@@ -12,7 +12,7 @@
                     <div
                         class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min">
                         <div class="inline-flex rounded-md shadow-xs justify-end" role="group">
-                            <a href="/catalogue"><button type="button"
+                            <a href="/document"><button type="button"
                                     class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create</button></a>
                         </div>
                         <label for="table-search" class="sr-only">Search</label>
@@ -27,7 +27,7 @@
                             </div>
                             <input name="name" v-model="name" @keyup="debounceInput" type="text" id="table-search"
                                 class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Search catalogues">
+                                placeholder="Search documents">
                         </div>
                     </div>
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -41,14 +41,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(catalogue, index) in catalogues" :key="index"
+                            <tr v-for="(document, index) in documents" :key="index"
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ catalogue.name }}
+                                    {{ document.name }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    <a :href="'/catalogues/' + catalogue.id" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</a>
+                                    
                                 </td>
                             </tr>
 
@@ -72,7 +72,7 @@ import _ from 'lodash';
 
 export default {
     data: () => ({
-        catalogues: [],
+        documents: [],
         name: null,
 
         pagination: {
@@ -86,21 +86,22 @@ export default {
 
     components: { AuthenticatedLayout, Head },
     mounted: async function () {
-        
+        this.repopulateInput();
+        this.loadData();
     },
     methods: {
-        getCatalogues: async function () {
+        getDocuments: async function () {
             await axios({
                 method: "GET",
                 params: this.$getUrlParamsAsObj(),
-                url: "/async/catalogues",
+                url: "/async/documents",
             })
                 .then((response) => {
-                    this.pagination.total = response.data.catalogues.total;
-                    this.pagination.per_page = response.data.catalogues.per_page;
-                    this.pagination.page = response.data.catalogues.current_page;
+                    this.pagination.total = response.data.documents.total;
+                    this.pagination.per_page = response.data.documents.per_page;
+                    this.pagination.page = response.data.documents.current_page;
 
-                    this.catalogues = response.data.catalogues.data;
+                    this.documents = response.data.documents.data;
                 });
         },
 
@@ -117,7 +118,7 @@ export default {
 
         addFilter(key, value) {
             this.$addUrlParams(key, value);
-            this.getCatalogues();
+            this.getDocuments();
         },
 
         changePage() {
