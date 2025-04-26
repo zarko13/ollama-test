@@ -5,6 +5,7 @@ namespace App\Repositories\Chat;
 use App\Models\Chat;
 use App\Models\ChatMessage;
 use App\Models\User;
+use App\Repositories\Ollama\OllamaService;
 use App\Repositories\ServiceResponse;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -79,6 +80,8 @@ class ChatService
                 'type' => $type,
                 'content' => $message
             ]);
+
+            OllamaService::sendChatMessage($chatMessage);
 
 
             $data['message'] = $chatMessage;

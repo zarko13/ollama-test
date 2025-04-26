@@ -60,7 +60,20 @@ class Chat extends Model
         return $this->hasMany(ChatMessage::class);
     }
 
+    public function messageHistory() : HasMany {
+        return $this->hasMany(ChatMessage::class)->oldestById();
+    }
+
     public function getIsOpenAttribute(){
         return $this->isOpen();
+    }
+
+    public function getFormattedMessageHistory(){
+        $history = [];
+        foreach ($this->messageHistory as $message) {
+            $history[] = $message->formatForHistory();
+        }
+
+        return $history;
     }
 }
