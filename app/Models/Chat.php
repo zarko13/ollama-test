@@ -54,7 +54,7 @@ class Chat extends Model
     }
 
     public function getDisplayBotAttribute(){
-        return $this->bot ? ($this->bot->name . '(' . $this->bot->type . ')') : null;
+        return $this->bot ? ($this->bot->name . '(' . $this->bot->model->value . ')') : null;
     }
 
     public function bot() : BelongsTo {

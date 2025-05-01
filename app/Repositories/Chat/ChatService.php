@@ -25,7 +25,7 @@ class ChatService
 
             $chat = Chat::create([
                 'name' => $name,
-                'user_id' => $bot->id,
+                'bot_id' => $bot->id,
                 'status' => Chat::$_STATUS_OPEN
             ]);
 
