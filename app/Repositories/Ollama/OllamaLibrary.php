@@ -52,7 +52,7 @@ class OllamaLibrary
 
         $response = Http::timeout(600)->post($fullUrl, $data);
 
-        return self::processResponse($response, false);
+        return self::processResponse($response, true);
     }
 
     private static function processResponse($response, $log = true){
