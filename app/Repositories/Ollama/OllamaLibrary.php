@@ -36,16 +36,16 @@ class OllamaLibrary
 
         $response = Http::timeout(600)->post($fullUrl, $data);
 
-        return self::processResponse($response, false);
+        return self::processResponse($response, true);
     }
 
-    public static function generateEmbeddings(Bot $bot, $chunks){
+    public static function generateEmbeddings($chunks){
 
         $api = new self();
         $fullUrl = $api->apiUrl . 'embed';
 
         $data = [
-            'model' => $bot->model->value,
+            'model' => 'mxbai-embed-large:latest',
             'input' => $chunks,
         ];
 

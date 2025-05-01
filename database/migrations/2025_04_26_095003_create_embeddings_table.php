@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('bot_id');
             $table->integer('index');
             $table->integer('type');
-            $table->vector('embedding', 2048);
+            $table->vector('embedding', 1024);
             $table->json('metadata');
             $table->timestamps();
             $table->softDeletes();

@@ -24,7 +24,7 @@ class EmbeddingService
 
 
             $chunks = self::chunkDocument($document)->returnOrFail()->data['chunks'];
-            $embeddings = OllamaService::generateEmbeddings($document->bot, $chunks)->returnOrFail()->data['embeddings'];
+            $embeddings = OllamaService::generateEmbeddings($chunks)->returnOrFail()->data['embeddings'];
 
             DB::beginTransaction();
 
