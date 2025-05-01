@@ -48,8 +48,8 @@ class ChatController extends BaseAppController
 
     public function asyncStoreChat(StoreChatRequest $request){
         $name = $request->input('name');
-
-        $response = ChatService::storeChat($this->user, $name);
+        $bot = Bot::findOrFail($request->input('bot_id'));
+        $response = ChatService::storeChat($bot, $name);
 
         return $response->toAsyncResponse();
     }

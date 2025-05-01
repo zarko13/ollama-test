@@ -3,9 +3,9 @@
 namespace App\Repositories\Chat;
 
 use App\Events\ChatMessageCreated;
+use App\Models\Bot;
 use App\Models\Chat;
 use App\Models\ChatMessage;
-use App\Models\User;
 use App\Repositories\Ollama\OllamaService;
 use App\Repositories\ServiceResponse;
 use Exception;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 class ChatService
 {
 
-    public static function storeChat(User $user, string $name){
+    public static function storeChat(Bot $bot, string $name){
 
         $errors = null;
         $data = [];
@@ -25,7 +25,7 @@ class ChatService
 
             $chat = Chat::create([
                 'name' => $name,
-                'user_id' => $user->id,
+                'user_id' => $bot->id,
                 'status' => Chat::$_STATUS_OPEN
             ]);
 

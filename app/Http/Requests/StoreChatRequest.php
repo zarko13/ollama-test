@@ -18,7 +18,8 @@ class StoreChatRequest extends BaseAsyncRequest
     public function rules(): array
     {
         return [
-            'name' => ['required']
+            'name' => ['required'],
+            'bot_id' => ['required', 'exists:bots,id']
         ];
     }
 }
