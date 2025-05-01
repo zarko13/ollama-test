@@ -28,7 +28,7 @@ class BotController extends BaseAppController
             'instructions' => $bot->instructions()->oldestById()->get(),
             'documents' => $bot->documents()->oldestById()->get()
         ];
-        return Inertia::render('Bot/Show');
+        return Inertia::render('Bot/Show', $data);
     }
 
     public function asyncBots(Request $request){
