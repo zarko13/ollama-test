@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\StoreMessageRequest;
+use App\Models\Bot;
 use App\Models\Chat;
 use App\Repositories\Chat\ChatService;
 use App\Repositories\ServiceResponse;
@@ -17,11 +18,14 @@ class ChatController extends BaseAppController
     }
 
     public function create(){
-        return Inertia::render('Chat/Create');
+        $data = [
+            'bots' => Bot::all()
+        ];
+        return Inertia::render('Chat/Create', $data);
     }
 
     public function show($id){
-        $chat = $this->user->chats()->findOrFail($id);
+        $chat = Chat::findOrFail($id);
 
         $data = [
             'chat' => $chat,
@@ -51,7 +55,7 @@ class ChatController extends BaseAppController
     }
 
     public function asyncCloseChat(StoreChatRequest $request){
-        $chat = $this->user->chats()->findOrFail($request->input('reference'));
+        $chat = Chat::findOrFail($request->input('reference'));
 
         $response = ChatService::closeChat($chat);
 
@@ -59,7 +63,7 @@ class ChatController extends BaseAppController
     }
 
     public function asyncStoreMessage(StoreMessageRequest $request){
-        $chat = $this->user->chats()->findOrFail($request->input('reference'));
+        $chat = Chat::findOrFail($request->input('reference'));
         $message = $request->input('message');
 
         $response = ChatService::storeUserChatMessage($chat, $message);

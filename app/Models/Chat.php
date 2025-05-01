@@ -43,6 +43,7 @@ class Chat extends Model
         $data = parent::toArray();
 
         $data['display_status'] = $this->getDisplayStatusAttribute();
+        $data['display_bot'] = $this->getDisplayBotAttribute();
         $data['is_open'] = $this->getIsOpenAttribute();
 
         return $data;
@@ -50,6 +51,10 @@ class Chat extends Model
 
     public function getDisplayStatusAttribute(){
         return $this->getStatus();
+    }
+
+    public function getDisplayBotAttribute(){
+        return $this->bot ? ($this->bot->name . '(' . $this->bot->type . ')') : null;
     }
 
     public function bot() : BelongsTo {
