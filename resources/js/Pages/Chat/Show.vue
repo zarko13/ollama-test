@@ -6,7 +6,7 @@
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="bg-gray-100 h-screen flex flex-col max-w-lg mx-auto">
                 <div class="bg-blue-500 p-4 text-white flex justify-between items-center">
-                    <span>{{ chat.name }}</span>
+                    <span>{{ chat.name }} - {{ chat.display_bot }}</span>
                     <div class="relative inline-block text-left">
                         <button v-if="chat.is_open" id="setting" class="hover:bg-blue-400 rounded-md p-1">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
