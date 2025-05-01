@@ -29,10 +29,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('documents', [DocumentController::class, 'index']);
-Route::get('document', [DocumentController::class, 'create']);
-Route::get('async/documents', [DocumentController::class, 'asyncDocuments']);
-
 
 Route::get('chats', [ChatController::class, 'index']);
 Route::get('chat', [ChatController::class, 'create']);
