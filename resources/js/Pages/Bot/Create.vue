@@ -59,7 +59,7 @@ export default {
                 method: "POST",
                 data: {
                     name : this.name,
-                    mode : this.model
+                    model : this.model
                 },
                 url: "/async/store-bot",
             }).then((response) => {

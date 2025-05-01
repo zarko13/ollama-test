@@ -119,7 +119,7 @@ export default {
         },
 
         loadData() {
-            this.getDocuments();
+            this.getBots();
         },
 
         addFilter(key, value) {
