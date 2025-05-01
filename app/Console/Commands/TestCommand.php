@@ -4,8 +4,11 @@ namespace App\Console\Commands;
 
 use App\Events\ChatMessageCreated;
 use App\Models\ChatMessage;
+use App\Models\Embedding;
 use App\Repositories\Ollama\OllamaService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
+use Pgvector\Laravel\Distance;
 
 class TestCommand extends Command
 {
@@ -29,6 +32,11 @@ class TestCommand extends Command
     public function handle()
     {
         $embedding = OllamaService::generateEmbedding('Dobar dan možete li mi pomoci')->returnOrFail()->data['embedding'];
-        dd($embedding);
+        $neighbors = Embedding::query()->nearestNeighbors('embedding', $embedding, Distance::Cosine)->take(5)->get();
+
+       foreach ($neighbors as $neighbor) {
+            Log::info($neighbor->id . ' ' . $neighbor->neighbor_distance);
+       }
+
     }
 }
