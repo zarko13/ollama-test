@@ -33,4 +33,13 @@ class Bot extends Model
     public function scopeLatestById($query){
         return $query->orderBy('id', 'desc');
     }
+
+    public function formatInstructionsForChat(){
+        $instructions = [];
+        foreach ($this->instructions as $instruction) {
+            $instructions[] = $instruction->formatForChat();
+        }
+
+        return $instructions;
+    }
 }

@@ -25,11 +25,11 @@ class OllamaLibrary
         $api = new self();
         $fullUrl = $api->apiUrl . 'chat';
 
-    
+
 
         $data = [
-            'model' => $api->model,
-            'messages' => $chat->getFormattedMessageHistory(),
+            'model' => $chat->bot->model->value,
+            'messages' => $chat->formatForChat(),
             "stream" => false,
         ];
 

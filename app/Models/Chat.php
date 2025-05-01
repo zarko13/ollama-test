@@ -73,10 +73,14 @@ class Chat extends Model
         return $this->isOpen();
     }
 
-    public function getFormattedMessageHistory(){
-        $history = [self::getSystemMessage()];
+    public function formatForChat(){
+        return array_merge($this->bot->formatInstructionsForChat(), $this->formatMessagesForChat);
+    }
+
+    public function formatMessagesForChat(){
+        $history = [];
         foreach ($this->messageHistory as $message) {
-            $history[] = $message->formatForHistory();
+            $history[] = $message->formatForChat();
         }
 
         return $history;

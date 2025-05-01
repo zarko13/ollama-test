@@ -39,7 +39,7 @@ class ChatMessage extends Model
         return $this->type == self::$_TYPE_BY_USER;
     }
 
-    public function formatForHistory(){
+    public function formatForChat(){
         return [
             'role' => $this->type == self::$_TYPE_BY_USER ? 'user' : 'assistant',
             'content' => $this->content

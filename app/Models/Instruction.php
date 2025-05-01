@@ -24,4 +24,11 @@ class Instruction extends Model
         return $query->orderBy('id', 'asc');
     }
 
+    public function formatForChat(){
+        return [
+            'role' => 'system',
+            'content' => $this->content
+        ];
+    }
+
 }
