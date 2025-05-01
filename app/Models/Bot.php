@@ -29,4 +29,8 @@ class Bot extends Model
     public function documents(): HasMany{
         return $this->hasMany(Document::class);
     }
+
+    public function scopeLatestById($query){
+        return $query->orderBy('id', 'desc');
+    }
 }

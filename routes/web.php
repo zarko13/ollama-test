@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BotController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
@@ -41,3 +42,8 @@ Route::get('async/chats', [ChatController::class, 'asyncChats']);
 Route::post('async/store-chat', [ChatController::class, 'asyncStoreChat']);
 Route::post('async/close-chat', [ChatController::class, 'asyncCloseChat']);
 Route::post('async/store-message', [ChatController::class, 'asyncStoreMessage']);
+
+Route::get('bots', [BotController::class, 'index']);
+Route::get('bot', [BotController::class, 'create']);
+Route::get('async/bots', [BotController::class, 'asyncBots']);
+Route::post('async/store-bot', [BotController::class, 'asyncStoreDocument']);

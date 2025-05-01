@@ -2,64 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Bot\Model;
 use App\Models\Bot;
+use App\Repositories\ServiceResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class BotController extends Controller
+class BotController extends BaseAppController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        return Inertia::render('Bot/Index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create(){
+        return Inertia::render('Not/Create', ['models' => Model::getOptions()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function show(Bot $bot){
+        return Inertia::render('Bot/Show');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Bot $bot)
-    {
-        //
+    public function asyncBots(Request $request){
+        $query = Bot::latestById();
+
+        if($request->filled('name')){
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        $response = new ServiceResponse(null, ['bots' => $query->paginate()]);
+
+        return $response->toAsyncResponse();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Bot $bot)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Bot $bot)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Bot $bot)
-    {
-        //
-    }
+    
 }
