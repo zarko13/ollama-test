@@ -50,4 +50,5 @@ Route::get('async/bots', [BotController::class, 'asyncBots']);
 Route::post('async/store-bot', [BotController::class, 'asyncStoreBot']);
 Route::get('bot/{id}/add-instruction', [BotController::class, 'addInstruction']);
 Route::post('async/store-instruction', [BotController::class, 'asyncStoreInstruction']);
+Route::post('async/delete-instruction', [BotController::class, 'asyncDeleteInstruction']);
 Route::get('bot/{id}/add-document', [BotController::class, 'addInstruction']);

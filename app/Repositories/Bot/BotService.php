@@ -63,6 +63,26 @@ class BotService
 
     }
 
+    public static function deleteInstruction(Instruction $instruction){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            $instruction->forceDelete();
+
+            $data['success'] = true;
+
+        } catch (Exception $error) {
+            Log::error('Failed to delete instruction.Error:'.$error);
+            $errors[] = 'Failed to delete instruction';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
 
 
 }

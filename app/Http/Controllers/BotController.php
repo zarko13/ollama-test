@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Bot\Model;
+use App\Http\Requests\DeleteInstructionRequest;
 use App\Http\Requests\StoreBotRequest;
 use App\Http\Requests\StoreInstructionRequest;
 use App\Models\Bot;
+use App\Models\Instruction;
 use App\Repositories\Bot\BotService;
 use App\Repositories\ServiceResponse;
 use Illuminate\Http\Request;
@@ -70,6 +72,14 @@ class BotController extends BaseAppController
         $bot = Bot::findOrFail($request->input('bot_id'));
 
         $response = BotService::storeInstruction($bot, $name, $content);
+
+        return $response->toAsyncResponse();
+    }
+
+    public function asyncDeleteInstruction(DeleteInstructionRequest $request){
+        $instruction = Instruction::findOrFail($request->input('reference'));
+
+        $response = BotService::deleteInstruction($instruction);
 
         return $response->toAsyncResponse();
     }
