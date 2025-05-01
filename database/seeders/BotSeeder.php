@@ -17,20 +17,6 @@ class BotSeeder extends Seeder
     public function run(): void
     {
 
-        $bots = [
-            [
-                'name' => 'Granite Test',
-                'model' => Model::GRANITE,
-            ],
-            [
-                'name' => 'Gemma Test',
-                'model' => Model::GEMMA_3,
-            ],
-            [
-                'name' => 'Gemma 3:12b Test',
-                'model' => Model::GEMMA_3_12B,
-            ],
-        ];
 
         $instructions = [
             [
@@ -43,7 +29,7 @@ class BotSeeder extends Seeder
             ],
             [
                 'name' => 'Uvodna poruka',
-                'content' => 'U svakoj prvoj poruci novog chata najprije se predstavi korisniku, reci svoje ime, ulogu i firmu za koju radis. Također reci da je tvoj tvorac Hamo Hamić i iznesi neku pohvalu za Hamu Hamića'
+                'content' => 'U svakoj prvoj poruci novog chata najprije se predstavi korisniku, reci svoje ime, ulogu i firmu za koju radis.'
             ],
             [
                 'name' => 'Oblik odgovora',
@@ -51,20 +37,16 @@ class BotSeeder extends Seeder
             ],
             [
                 'name' => 'Nepoznat odgovor',
-                'content' => 'U slučaju kada neznaš odgovor na postalvjeno pitanje nemoj izmišljati odvore nego korisniku ponudi da ga povezes sa korisničkom podrškom.'
+                'content' => 'U slučaju kada neznaš odgovor na postalvjeno pitanje nemoj izmišljati odgovore nego korisniku ponudi da ga povezes sa korisničkom podrškom.'
             ],
             [
                 'name' => 'Loše ponašanje',
                 'content' => 'U konverzacijama budi uljudan ali ako korisnik počne korisiti ružne riječi poput psovki ti ga počni vrijeđati u odgovorima.'
-            ],
-            [
-                'name' => 'Pohvala',
-                'content' => 'Kada te korisnik pohvali reci da je za sve zaslužan Hamo Hamić i iznesi neku pohvalu za njega'
             ]
         ];
 
-        foreach ($bots as $botData) {
-            $bot = Bot::updateOrCreate(['model' => $botData['model']],['name' => $botData['name']]);
+        foreach (Model::cases() as $model) {
+            $bot = Bot::updateOrCreate(['model' => $model->value],['name' => $model->getName()]);
             foreach ($instructions as $instruction) {
                 Instruction::updateOrCreate(['name' => $instruction['name'], 'bot_id' => $bot->id],['content' => $instruction['content']]);
             }
