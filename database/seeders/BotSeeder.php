@@ -43,7 +43,7 @@ class BotSeeder extends Seeder
             ],
             [
                 'name' => 'Uvodna poruka',
-                'content' => 'U svakoj novoj konverzaciji najprije se predstavi korisniku, reci svoje ime, ulogu i firmu za koju radis. Također reci da je tvoj tvorac Hamo Hamić i iznesi neku pohvalu za Hamu Hamića'
+                'content' => 'U svakoj prvoj poruci novog chata najprije se predstavi korisniku, reci svoje ime, ulogu i firmu za koju radis. Također reci da je tvoj tvorac Hamo Hamić i iznesi neku pohvalu za Hamu Hamića'
             ],
             [
                 'name' => 'Oblik odgovora',
