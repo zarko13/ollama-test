@@ -45,10 +45,9 @@ class OllamaService
         try {
 
             $response = OllamaLibrary::generateEmbeddings($bot, $chunks);
-            if(!$response['success']){
+            if(!$response['success'] || !isset($response['body']['embeddings'])){
                 return new ServiceResponse(['Failed to generate embeddings'], $data);
             }
-
 
             $data['embeddings'] = $response['body']['embeddings'];
 
