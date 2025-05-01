@@ -3,8 +3,10 @@
 namespace App\Repositories\Ollama;
 
 use App\Models\Chat;
+use App\Models\Document;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class OllamaLibrary
 {
@@ -22,17 +24,55 @@ class OllamaLibrary
         $api = new self();
         $fullUrl = $api->apiUrl . 'chat';
 
+        $history = $chat->getFormattedMessageHistory();
+
+
         $data = [
             'model' => $api->model,
             'messages' => $chat->getFormattedMessageHistory(),
             "stream" => false,
+            'options' => [
+                'temperature' => 0.0
+            ],
+            'format' => 'json'
         ];
 
         Log::info('Ollama send chat request', $data);
 
-        $response = Http::post($fullUrl, $data);
+        $response = Http::timeout(600)->post($fullUrl, $data);
 
-        return self::processResponse($response, false);
+        return self::processResponse($response, true);
+    }
+
+    public static function sendMessage($incomingMessage){
+
+        ini_set('max_execution_time', 0);
+
+        $api = new self();
+        $fullUrl = $api->apiUrl . 'chat';
+
+        $message = 'Translate this message into english from spanish, without special characters, new lines or breaks. Don\'t use double-quotes. If the message is empty, return \'\'. Message: ' . $incomingMessage;
+
+
+        $data = [
+            'model' => $api->model,
+            'messages' => [
+                [
+                    'role' => 'user',
+                    'content' => $message
+                ]
+            ],
+            "stream" => false,
+            'options' => [
+                'temperature' => 0.0
+            ]
+        ];
+
+        Log::info('Ollama send chat request', $data);
+
+        $response = Http::timeout(600)->connectTimeout(600)->post($fullUrl, $data);
+
+        return self::processResponse($response, true);
     }
 
     public static function generateEmbeddings($chunks){
@@ -43,6 +83,22 @@ class OllamaLibrary
         $data = [
             'model' => $api->model,
             'input' => $chunks,
+        ];
+
+
+        $response = Http::timeout(600)->post($fullUrl, $data);
+
+        return self::processResponse($response, false);
+    }
+
+    public static function generateEmbedding($content){
+
+        $api = new self();
+        $fullUrl = $api->apiUrl . 'embed';
+
+        $data = [
+            'model' => $api->model,
+            'input' => $content,
         ];
 
 

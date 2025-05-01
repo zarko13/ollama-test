@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Events\ChatMessageCreated;
-use App\Models\ChatMessage;
+use App\Repositories\Embedding\EmbeddingRepository;
+use App\Repositories\Ollama\OllamaService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class TestCommand extends Command
 {
@@ -27,7 +28,11 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $m = ChatMessage::find(25);
-        event(new ChatMessageCreated($m));
+        $embedding = OllamaService::submitMessage('calming oat-based powder exfoliant')->returnOrFail()->data['embedding'];
+        $neighbors = EmbeddingRepository::getSimilarEmbeddings($embedding);
+        foreach ($neighbors as $neighbor) {
+            Log::info($neighbor->neighbor_distance);
+            Log::info($neighbor->metadata['content']);
+        }
     }
 }

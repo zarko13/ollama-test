@@ -34,6 +34,29 @@ class OllamaService
 
     }
 
+    public static function sendMessage($message){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            $response = OllamaLibrary::sendMessage($message);
+            if(!$response['success']){
+                return new ServiceResponse(['Failed to send chat message'], $data);
+            }
+
+            $data['message'] = $response['body']['message']['content'];
+
+        } catch (Exception $error) {
+            Log::error('Failed to send chat message.Error:'.$error);
+            $errors[] = 'Failed to send chat message';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
     public static function generateEmbeddings($chunks){
 
         $errors = null;
@@ -52,6 +75,30 @@ class OllamaService
         } catch (Exception $error) {
             Log::error('Failed to generate embeddings.Error:'.$error);
             $errors[] = 'Failed to generate embeddings';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
+    public static function generateEmbedding($content){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            $response = OllamaLibrary::generateEmbedding($content);
+            if(!$response['success']){
+                return new ServiceResponse(['Failed to generate embedding'], $data);
+            }
+
+
+            $data['embedding'] = $response['body']['embeddings'][0];
+
+        } catch (Exception $error) {
+            Log::error('Failed to generate embedding.Error:'.$error);
+            $errors[] = 'Failed to generate embedding';
         }
 
         return new ServiceResponse($errors, $data);
