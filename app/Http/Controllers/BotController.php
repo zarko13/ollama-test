@@ -14,6 +14,7 @@ use App\Models\Instruction;
 use App\Repositories\Bot\BotService;
 use App\Repositories\ServiceResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class BotController extends BaseAppController
@@ -115,6 +116,12 @@ class BotController extends BaseAppController
         $response = BotService::deleteDocument($document);
 
         return $response->toAsyncResponse();
+    }
+
+    public function downloadDocument($id){
+        $document = Document::findOrFail($id);
+
+        return Storage::download($document->path);
     }
 
 

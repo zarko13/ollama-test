@@ -53,3 +53,4 @@ Route::post('async/delete-instruction', [BotController::class, 'asyncDeleteInstr
 Route::get('bot/{id}/add-document', [BotController::class, 'addDocument']);
 Route::post('async/store-document', [BotController::class, 'asyncStoreDocument']);
 Route::post('async/delete-document', [BotController::class, 'asyncDeleteDocument']);
+Route::get('download-document/{id}', [BotController::class, 'downloadDocument']);
