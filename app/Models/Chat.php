@@ -12,7 +12,7 @@ class Chat extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id',
+        'bot_id',
         'name',
         'status'
     ];
@@ -52,8 +52,8 @@ class Chat extends Model
         return $this->getStatus();
     }
 
-    public function user() : BelongsTo {
-        return $this->belongsTo(User::class);
+    public function bot() : BelongsTo {
+        return $this->belongsTo(Bot::class);
     }
 
     public function messages() : HasMany {
@@ -79,7 +79,7 @@ class Chat extends Model
 
     public static function getSystemMessages(){
         return [
-            
+
             'role' => 'system',
             'content' => 'Tvoje ime je Alfred i radiš kao chat bot u odjelu za podršku. Svaki novi razgovor započni tako što ceš reći svoje ime u ulogu. U konverzacijama bud pristojan i koncizan. Nemoj izmišljati odgovore. Kada ne znas odogovr na određeno pitanje korisniku pouni da ga preusmjeris na nekoga iz tima za podršku.'
         ];
