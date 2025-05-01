@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Ollama;
 
+use App\Models\Bot;
 use App\Models\Chat;
 use App\Repositories\ServiceResponse;
 use Exception;
@@ -36,14 +37,14 @@ class OllamaService
 
     }
 
-    public static function generateEmbeddings($chunks){
+    public static function generateEmbeddings(Bot $bot, $chunks){
 
         $errors = null;
         $data = [];
 
         try {
 
-            $response = OllamaLibrary::generateEmbeddings($chunks);
+            $response = OllamaLibrary::generateEmbeddings($bot, $chunks);
             if(!$response['success']){
                 return new ServiceResponse(['Failed to generate embeddings'], $data);
             }

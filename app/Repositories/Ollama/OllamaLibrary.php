@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Ollama;
 
+use App\Models\Bot;
 use App\Models\Chat;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -38,13 +39,13 @@ class OllamaLibrary
         return self::processResponse($response, false);
     }
 
-    public static function generateEmbeddings($chunks){
+    public static function generateEmbeddings(Bot $bot, $chunks){
 
         $api = new self();
         $fullUrl = $api->apiUrl . 'embed';
 
         $data = [
-            'model' => $api->model,
+            'model' => $bot->model->value,
             'input' => $chunks,
         ];
 
