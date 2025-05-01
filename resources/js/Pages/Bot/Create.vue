@@ -47,7 +47,7 @@ export default {
         submitting : false
     }),
     props : {
-        models : Array
+        models : Object
     },
     components: { AuthenticatedLayout, Head },
     mounted: async function () {
