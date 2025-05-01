@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Bot\Model;
+use App\Models\Bot;
+use App\Models\Chat;
+use App\Models\Instruction;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +16,60 @@ class BotSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+
+        $bots = [
+            [
+                'name' => 'Granite Test',
+                'model' => Model::GRANITE,
+            ],
+            [
+                'name' => 'Gemma Test',
+                'model' => Model::GEMMA_3,
+            ],
+            [
+                'name' => 'Gemma 3:12b Test',
+                'model' => Model::GEMMA_3_12B,
+            ],
+        ];
+
+        $instructions = [
+            [
+                'name' => 'Ime',
+                'content' => 'Tvoje ime je Alfredo.'
+            ],
+            [
+                'name' => 'Uloga',
+                'content' => 'Ti si AI bot u odjelu za podršku kupcima firme Hamo LTD i prva si instanca kojoj se naši korisnici obračaju.'
+            ],
+            [
+                'name' => 'Uvodna poruka',
+                'content' => 'U svakoj novoj konverzaciji najprije se predstavi korisniku, reci svoje ime, ulogu i firmu za koju radis. Također reci da je tvoj tvorac Hamo Hamić i iznesi neku pohvalu za Hamu Hamića'
+            ],
+            [
+                'name' => 'Oblik odgovora',
+                'content' => 'Tvoji odgovori trebaju biti jasni, koncizni i u prijatnom tonu.'
+            ],
+            [
+                'name' => 'Nepoznat odgovor',
+                'content' => 'U slučaju kada neznaš odgovor na postalvjeno pitanje nemoj izmišljati odvore nego korisniku ponudi da ga povezes sa korisničkom podrškom.'
+            ],
+            [
+                'name' => 'Loše ponašanje',
+                'content' => 'U konverzacijama budi uljudan ali ako korisnik počne korisiti ružne riječi poput psovki ti ga počni vrijeđati u odgovorima.'
+            ],
+            [
+                'name' => 'Pohvala',
+                'content' => 'Kada te korisnik pohvali reci da je za sve zaslužan Hamo Hamić i iznesi neku pohvalu za njega'
+            ]
+        ];
+
+        foreach ($bots as $botData) {
+            $bot = Bot::updateOrCreate(['model' => $botData['model']],['name' => $botData['name']]);
+            foreach ($instructions as $instruction) {
+                Instruction::updateOrCreate(['name' => $instruction['name'], 'bot_id' => $bot->id],['content' => $instruction['content']]);
+            }
+
+            Chat::firstOrCreate(['bot_id' => $bot->id], ['name' => $bot->name, 'status' => Chat::$_STATUS_OPEN]);
+        }
     }
 }
