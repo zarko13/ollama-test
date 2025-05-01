@@ -78,7 +78,7 @@ class EmbeddingService
                     $chunks[] = substr($text, $start);
                     break;
                 }
-                $chunks[] = mb_convert_encoding(substr($text, $start, $chunkSize), 'UTF-8');
+                $chunks[] = substr($text, $start, $chunkSize);
             }
 
 

@@ -61,6 +61,30 @@ class OllamaService
 
     }
 
+    public static function generateEmbedding($text){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            $response = OllamaLibrary::generateEmbedding($text);
+            if(!$response['success'] || !isset($response['body']['embeddings'])){
+                return new ServiceResponse(['Failed to generate embedding'], $data);
+            }
+
+
+            $data['embedding'] = $response['body']['embeddings'][0];
+
+        } catch (Exception $error) {
+            Log::error('Failed to generate embedding.Error:'.$error);
+            $errors[] = 'Failed to generate embedding';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
 
 
 }

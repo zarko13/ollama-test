@@ -55,6 +55,22 @@ class OllamaLibrary
         return self::processResponse($response, false);
     }
 
+    public static function generateEmbedding($text){
+
+        $api = new self();
+        $fullUrl = $api->apiUrl . 'embed';
+
+        $data = [
+            'model' => 'mxbai-embed-large:latest',
+            'input' => $text,
+        ];
+
+
+        $response = Http::timeout(600)->post($fullUrl, $data);
+
+        return self::processResponse($response, true);
+    }
+
     private static function processResponse($response, $log = true){
         if($log){
             Log::info('Ollama library response:'. $response->body());

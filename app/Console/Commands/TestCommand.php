@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Events\ChatMessageCreated;
 use App\Models\ChatMessage;
+use App\Repositories\Ollama\OllamaService;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command
@@ -27,7 +28,7 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $m = ChatMessage::find(25);
-        event(new ChatMessageCreated($m));
+        $embedding = OllamaService::generateEmbedding('Dobar dan možete li mi pomoci')->returnOrFail()->data['embedding'];
+        dd($embedding);
     }
 }
