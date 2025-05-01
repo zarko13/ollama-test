@@ -10,11 +10,9 @@ class OllamaLibrary
 {
 
     public string $apiUrl;
-    public string $model;
 
     public function __construct(){
         $this->apiUrl = config('ollama.api_url');
-        $this->model = config('ollama.model');
     }
 
     public static function sendChatMessage(Chat $chat){

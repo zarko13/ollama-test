@@ -74,7 +74,7 @@ class Chat extends Model
     }
 
     public function formatForChat(){
-        return array_merge($this->bot->formatInstructionsForChat(), $this->formatMessagesForChat);
+        return array_merge($this->bot->formatInstructionsForChat(), $this->formatMessagesForChat());
     }
 
     public function formatMessagesForChat(){
@@ -84,13 +84,5 @@ class Chat extends Model
         }
 
         return $history;
-    }
-
-    public static function getSystemMessages(){
-        return [
-
-            'role' => 'system',
-            'content' => 'Tvoje ime je Alfred i radiš kao chat bot u odjelu za podršku. Svaki novi razgovor započni tako što ceš reći svoje ime u ulogu. U konverzacijama bud pristojan i koncizan. Nemoj izmišljati odgovore. Kada ne znas odogovr na određeno pitanje korisniku pouni da ga preusmjeris na nekoga iz tima za podršku.'
-        ];
     }
 }
