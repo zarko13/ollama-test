@@ -45,5 +45,6 @@ Route::post('async/store-message', [ChatController::class, 'asyncStoreMessage'])
 
 Route::get('bots', [BotController::class, 'index']);
 Route::get('bot', [BotController::class, 'create']);
+Route::get('bot/{id}', [BotController::class, 'show']);
 Route::get('async/bots', [BotController::class, 'asyncBots']);
-Route::post('async/store-bot', [BotController::class, 'asyncStoreDocument']);
+Route::post('async/store-bot', [BotController::class, 'asyncStoreBot']);

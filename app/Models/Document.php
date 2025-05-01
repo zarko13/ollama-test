@@ -13,6 +13,7 @@ class Document extends Model
 
     protected $fillable = [
         'name',
+        'bot_id',
         'path',
         'status'
     ];
@@ -38,6 +39,10 @@ class Document extends Model
 
     public function scopeLatestById($query){
         return $query->orderBy('id', 'desc');
+    }
+
+    public function scopeOldestById($query){
+        return $query->orderBy('id', 'asc');
     }
 
     public function toArray(){

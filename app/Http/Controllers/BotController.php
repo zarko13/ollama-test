@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Bot\Model;
+use App\Http\Requests\StoreBotRequest;
 use App\Models\Bot;
+use App\Repositories\Bot\BotService;
 use App\Repositories\ServiceResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,10 +17,17 @@ class BotController extends BaseAppController
     }
 
     public function create(){
-        return Inertia::render('Not/Create', ['models' => Model::getOptions()]);
+        return Inertia::render('Bot/Create', ['models' => Model::getOptions()]);
     }
 
-    public function show(Bot $bot){
+    public function show($id){
+        $bot = Bot::findOrFail($id);
+
+        $data = [
+            'bot' => $bot,
+            'instructions' => $bot->instructions()->oldestById()->get(),
+            'documents' => $bot->documents()->oldestById()->get()
+        ];
         return Inertia::render('Bot/Show');
     }
 
@@ -34,5 +43,15 @@ class BotController extends BaseAppController
         return $response->toAsyncResponse();
     }
 
-    
+    public function asyncStoreBot(StoreBotRequest $request){
+
+        $name = $request->input('name');
+        $model = Model::from($request->input('model'));
+
+        $response = BotService::storeBot($name, $model);
+
+        return $response->toAsyncResponse();
+    }
+
+
 }

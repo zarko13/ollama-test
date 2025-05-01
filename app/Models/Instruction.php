@@ -20,4 +20,8 @@ class Instruction extends Model
         return $this->belongsTo(Bot::class);
     }
 
+    public function scopeOldestById($query){
+        return $query->orderBy('id', 'asc');
+    }
+
 }
