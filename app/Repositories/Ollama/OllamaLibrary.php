@@ -19,8 +19,13 @@ class OllamaLibrary
 
     public static function sendChatMessage(Chat $chat){
 
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', -1);
+
         $api = new self();
         $fullUrl = $api->apiUrl . 'chat';
+
+    
 
         $data = [
             'model' => $api->model,
@@ -30,7 +35,7 @@ class OllamaLibrary
 
         Log::info('Ollama send chat request', $data);
 
-        $response = Http::post($fullUrl, $data);
+        $response = Http::timeout(600)->post($fullUrl, $data);
 
         return self::processResponse($response, false);
     }

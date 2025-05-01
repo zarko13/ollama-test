@@ -11,6 +11,7 @@ use Illuminate\Foundation\Queue\Queueable;
 class ProcessChatMessageJob implements ShouldQueue
 {
     use Queueable;
+    public $timeout = 0;
 
     public ChatMessage $message;
     public function __construct(ChatMessage $chatMessage){
@@ -24,9 +25,12 @@ class ProcessChatMessageJob implements ShouldQueue
     {
         try {
 
+            ini_set('max_execution_time', 0);
+            ini_set('memory_limit', -1);
+
             ChatService::processNewChatMessage($this->message)->returnOrFail();
 
-            
+
         } catch (Exception $e) {
             throw $e;
         }

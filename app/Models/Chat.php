@@ -69,11 +69,19 @@ class Chat extends Model
     }
 
     public function getFormattedMessageHistory(){
-        $history = [];
+        $history = [self::getSystemMessage()];
         foreach ($this->messageHistory as $message) {
             $history[] = $message->formatForHistory();
         }
 
         return $history;
+    }
+
+    public static function getSystemMessages(){
+        return [
+            
+            'role' => 'system',
+            'content' => 'Tvoje ime je Alfred i radiš kao chat bot u odjelu za podršku. Svaki novi razgovor započni tako što ceš reći svoje ime u ulogu. U konverzacijama bud pristojan i koncizan. Nemoj izmišljati odgovore. Kada ne znas odogovr na određeno pitanje korisniku pouni da ga preusmjeris na nekoga iz tima za podršku.'
+        ];
     }
 }
