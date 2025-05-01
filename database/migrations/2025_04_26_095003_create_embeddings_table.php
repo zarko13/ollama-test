@@ -15,6 +15,8 @@ return new class extends Migration
         Schema::create('embeddings', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('document_id');
+            $table->bigInteger('bot_id');
+            $table->integer('index');
             $table->integer('type');
             $table->vector('embedding', 2048);
             $table->json('metadata');

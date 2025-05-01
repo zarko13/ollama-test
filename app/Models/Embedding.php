@@ -13,6 +13,8 @@ class Embedding extends Model
 
     protected $fillable = [
         'document_id',
+        'bot_id',
+        'index',
         'type',
         'embedding',
         'metadata'
