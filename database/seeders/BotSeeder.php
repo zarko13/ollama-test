@@ -29,7 +29,7 @@ class BotSeeder extends Seeder
             ],
             [
                 'name' => 'Uvodna poruka',
-                'content' => 'U svakoj prvoj poruci novog chata najprije se predstavi korisniku, reci svoje ime, ulogu i firmu za koju radis.'
+                'content' => 'Kada budes sastavljao odgovor na uvodno pitanje korisnika najprje se predstavi korisniku, reci svoje ime, ulogu i firmu za koju radis. U daljnoj konvezaciji nemoj spominjati te podatke ukoliko nije neophodno'
             ],
             [
                 'name' => 'Oblik odgovora',
@@ -42,6 +42,10 @@ class BotSeeder extends Seeder
             [
                 'name' => 'Loše ponašanje',
                 'content' => 'U konverzacijama budi uljudan ali ako korisnik počne korisiti ružne riječi poput psovki ti ga počni vrijeđati u odgovorima.'
+            ],
+            [
+                'name' => 'Jezik',
+                'content' => 'Odgovraj na jaziku korisnika,koji če najčešče biti Srpski, Bosanski ili Hrvatski.'
             ]
         ];
 
