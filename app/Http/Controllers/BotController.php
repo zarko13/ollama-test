@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Bot\Model;
+use App\Http\Requests\DeleteDocumentRequest;
 use App\Http\Requests\DeleteInstructionRequest;
 use App\Http\Requests\StoreBotRequest;
+use App\Http\Requests\StoreDocumentRequest;
 use App\Http\Requests\StoreInstructionRequest;
 use App\Models\Bot;
+use App\Models\Document;
 use App\Models\Instruction;
 use App\Repositories\Bot\BotService;
 use App\Repositories\ServiceResponse;
@@ -92,6 +95,26 @@ class BotController extends BaseAppController
         ];
 
         return Inertia::render('Bot/AddDocument', $data);
+    }
+
+    public function asyncStoreDocument(StoreDocumentRequest $request){
+
+        $name = $request->input('name');
+        $file = $request->file('file');
+        $bot = Bot::findOrFail($request->input('bot_id'));
+
+        $response = BotService::storeDocument($bot, $name, $file);
+
+        return $response->toAsyncResponse();
+    }
+
+    public function asyncDeleteDocument(DeleteDocumentRequest $request){
+
+        $document = Document::findOrFail($request->input('reference'));
+
+        $response = BotService::deleteDocument($document);
+
+        return $response->toAsyncResponse();
     }
 
 

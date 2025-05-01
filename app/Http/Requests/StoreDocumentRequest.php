@@ -13,7 +13,8 @@ class StoreDocumentRequest extends BaseAsyncRequest
     {
         return [
             'name' => ['required'],
-            'file' => ['required', 'file']
+            'file' => ['required', 'file'],
+            'bot_id' => ['required', 'exists:bots,id']
         ];
     }
 }

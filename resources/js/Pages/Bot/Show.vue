@@ -155,6 +155,22 @@ export default {
                 }
             });
         },
+
+        deleteDocument: async function (document) {
+            await axios({
+                method: "POST",
+                data: {
+                    reference : document.id
+                },
+                url: "/async/delete-document",
+            }).then((response) => {
+                window.location.reload();
+            }).catch((error) => {
+                for (let index = 0; index < error.response.data.length; index++) {
+                    this.$toast.error(error.response.data[index]);
+                }
+            });
+        },
     },
 
 

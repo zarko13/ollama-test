@@ -32,8 +32,7 @@ require __DIR__.'/auth.php';
 Route::get('documents', [DocumentController::class, 'index']);
 Route::get('document', [DocumentController::class, 'create']);
 Route::get('async/documents', [DocumentController::class, 'asyncDocuments']);
-Route::post('async/store-document', [DocumentController::class, 'asyncStoreDocument']);
-Route::post('async/delete-document', [DocumentController::class, 'asyncDeleteDocument']);
+
 
 Route::get('chats', [ChatController::class, 'index']);
 Route::get('chat', [ChatController::class, 'create']);
@@ -51,4 +50,6 @@ Route::post('async/store-bot', [BotController::class, 'asyncStoreBot']);
 Route::get('bot/{id}/add-instruction', [BotController::class, 'addInstruction']);
 Route::post('async/store-instruction', [BotController::class, 'asyncStoreInstruction']);
 Route::post('async/delete-instruction', [BotController::class, 'asyncDeleteInstruction']);
-Route::get('bot/{id}/add-document', [BotController::class, 'addInstruction']);
+Route::get('bot/{id}/add-document', [BotController::class, 'addDocument']);
+Route::post('async/store-document', [BotController::class, 'asyncStoreDocument']);
+Route::post('async/delete-document', [BotController::class, 'asyncDeleteDocument']);

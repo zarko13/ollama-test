@@ -4,10 +4,12 @@ namespace App\Repositories\Bot;
 
 use App\Enums\Bot\Model;
 use App\Models\Bot;
+use App\Models\Document;
 use App\Models\Instruction;
 use App\Repositories\ServiceResponse;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class BotService
 {
@@ -83,6 +85,56 @@ class BotService
 
     }
 
+    public static function storeDocument(Bot $bot, string $name, $file){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+            $path = Storage::put('documents', $file);
+
+
+            $document = Document::create([
+                'name' => $name,
+                'path' => $path,
+                'status' => Document::$_STATUS_PENDING,
+                'bot_id' => $bot->id
+            ]);
+
+
+            $data['document'] = $document;
+
+        } catch (Exception $error) {
+            Log::error('Failed to store document.Error:'.$error);
+            $errors[] = 'Failed to store document';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
+    public static function deleteDocument(Document $document){
+
+        $errors = null;
+        $data = [];
+
+        try {
+
+
+            $document->delete();
+
+
+            $data['success'] = true;
+
+        } catch (Exception $error) {
+            Log::error('Failed to delete document.Error:'.$error);
+            $errors[] = 'Failed to delete document';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
 
 
 }
