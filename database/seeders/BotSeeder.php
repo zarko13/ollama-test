@@ -42,10 +42,6 @@ class BotSeeder extends Seeder
             [
                 'name' => 'Loše ponašanje',
                 'content' => 'U konverzacijama budi uljudan ali ako korisnik počne korisiti ružne riječi poput psovki ti ga počni vrijeđati u odgovorima.'
-            ],
-            [
-                'name' => 'Jezik',
-                'content' => 'Odgovraj na jaziku korisnika,koji če najčešče biti Srpski, Bosanski ili Hrvatski.'
             ]
         ];
 
