@@ -31,11 +31,12 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $embedding = OllamaService::generateEmbedding('Dobar dan možete li mi pomoci')->returnOrFail()->data['embedding'];
+        $embedding = OllamaService::generateEmbedding('Uslovi aromaticonsti molekule')->returnOrFail()->data['embedding'];
         $neighbors = Embedding::query()->nearestNeighbors('embedding', $embedding, Distance::Cosine)->take(5)->get();
-
+        $context = [];
        foreach ($neighbors as $neighbor) {
-            Log::info($neighbor->id . ' ' . $neighbor->neighbor_distance);
+            Log::info($neighbor->neighbor_distance);
+            Log::info($neighbor->metadata['content']);
        }
 
     }

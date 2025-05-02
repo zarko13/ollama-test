@@ -108,13 +108,16 @@ class EmbeddingService
             $embedding = OllamaService::generateEmbedding($message->content)->data['embedding'];
             $neighbors = EmbeddingRepository::getEmbeddingNeighborsByCosineDistance($embedding, $message->chat->bot);
             foreach ($neighbors as $neighbor) {
-                $chunkNeighbors = [$neighbor->index, $neighbor->index + 1];
-                if($neighbor->index > 0){
-                    $chunkNeighbors[] = $neighbor->index - 1;
+                if(abs($neighbor->neighbor_distance) <= config('ollama.max_distance')){
+                    $chunkNeighbors = [$neighbor->index, $neighbor->index + 1];
+                    if($neighbor->index > 0){
+                        $chunkNeighbors[] = $neighbor->index - 1;
+                    }
+
+                    $neighborsReferences = EmbeddingRepository::getChunksReferencesByDocumentIdAndIndexes($neighbor->document_id, $chunkNeighbors);
+                    $references = array_merge($references, $neighborsReferences);
                 }
 
-                $neighborsReferences = EmbeddingRepository::getChunksReferencesByDocumentIdAndIndexes($neighbor->document_id, $chunkNeighbors);
-                $references = array_merge($references, $neighborsReferences);
             }
 
             if(count($references)){

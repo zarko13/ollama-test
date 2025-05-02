@@ -10,18 +10,18 @@ class EmbeddingRepository
 {
 
     public static function getEmbeddingNeighborsByCosineDistance($embedding, Bot $bot){
-        return  Embedding::where('bot_id', $bot)
+        return  Embedding::where('bot_id', $bot->id)
                             ->nearestNeighbors('embedding', $embedding, Distance::Cosine)
-                            ->select('document_id', 'index')
+                            //->select('document_id', 'index')
                             ->take(config('ollama.number_of_neighbors'))
                             ->get();
 
     }
 
     public static function getEmbeddingNeighborsByLTwoDistance($embedding, Bot $bot){
-        return  Embedding::where('bot_id', $bot)
+        return  Embedding::where('bot_id', $bot->id)
                             ->nearestNeighbors('embedding', $embedding, Distance::L2)
-                            ->select('document_id', 'index')
+                            //->select('document_id', 'index')
                             ->take(config('ollama.number_of_neighbors'))
                             ->get();
     }

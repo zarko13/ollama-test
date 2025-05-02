@@ -5,6 +5,7 @@ namespace App\Repositories\Ollama;
 use App\Models\Chat;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class OllamaLibrary
 {
@@ -30,17 +31,24 @@ class OllamaLibrary
         if($context){
             $messages[] = [
                 'role' => 'system',
-                'content' => 'Za genrisanje odgovora najprije pokušaj iskoristiti ovaj kontekst:' . $context
+                'content' => 'Odogovor na postalvjeno pitanje pokusaj pronaci u ovom tekstu:' . $context . '.'
             ];
+
+            $messages[] = [
+                'role' => 'system',
+                'content' => 'U odogovoru nemoj spominjati da kao izvor koristiš priloženi tekst.'
+            ];
+
         }
 
+        Storage::put('test.json', json_encode($messages));
         $data = [
             'model' => $chat->bot->model->value,
-            'messages' => $chat->formatForChat(),
+            'messages' => $messages,
             "stream" => false,
         ];
 
-        Log::info('Ollama send chat request', $data);
+        //Log::info('Ollama send chat request', $data);
 
         $response = Http::timeout(600)->post($fullUrl, $data);
 
@@ -72,7 +80,6 @@ class OllamaLibrary
             'model' => $api->embeddingModel,
             'input' => $text,
         ];
-
 
         $response = Http::timeout(600)->post($fullUrl, $data);
 

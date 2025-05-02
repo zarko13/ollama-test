@@ -22,7 +22,6 @@ class OllamaService
             ini_set('memory_limit', -1);
 
 
-
             $response = OllamaLibrary::sendChatMessage($chat, $context);
             if(!$response['success']){
                 return new ServiceResponse(['Failed to send chat message'], $data);
