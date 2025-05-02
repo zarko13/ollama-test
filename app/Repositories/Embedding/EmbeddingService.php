@@ -105,7 +105,7 @@ class EmbeddingService
 
         try {
 
-            $embedding = OllamaService::generateEmbedding($message->content)->data['message'];
+            $embedding = OllamaService::generateEmbedding($message->content)->data['embedding'];
             $neighbors = EmbeddingRepository::getEmbeddingNeighborsByCosineDistance($embedding, $message->chat->bot);
             foreach ($neighbors as $neighbor) {
                 $chunkNeighbors = [$neighbor->index, $neighbor->index + 1];
