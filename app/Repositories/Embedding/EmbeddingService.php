@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Embedding;
 
-
+use App\Models\ChatMessage;
 use App\Models\Document;
 use App\Models\Embedding;
 use App\Repositories\Ollama\OllamaService;
@@ -90,6 +90,47 @@ class EmbeddingService
         } catch (Exception $error) {
             Log::error('Failed to chunk document.Error:'.$error);
             $errors[] = 'Failed to chunk document document';
+        }
+
+        return new ServiceResponse($errors, $data);
+
+    }
+
+    public static function generateContextForResponse(ChatMessage $message){
+
+        $errors = null;
+        $data = [];
+        $contextMessages = [];
+        $references = [];
+
+        try {
+
+            $embedding = OllamaService::generateEmbedding($message->content)->data['message'];
+            $neighbors = EmbeddingRepository::getEmbeddingNeighborsByCosineDistance($embedding, $message->chat->bot);
+            foreach ($neighbors as $neighbor) {
+                $chunkNeighbors = [$neighbor->index, $neighbor->index + 1];
+                if($neighbor->index > 0){
+                    $chunkNeighbors[] = $neighbor->index - 1;
+                }
+
+                $neighborsReferences = EmbeddingRepository::getChunksReferencesByDocumentIdAndIndexes($neighbor->document_id, $chunkNeighbors);
+                $references = array_merge($references, $neighborsReferences);
+            }
+
+            if(count($references)){
+                $chunks = EmbeddingRepository::getEmbeddingsByReferences(array_unique($references));
+                foreach ($chunks as $chunk) {
+                    $contextMessages[] = $chunk->metadata['content'];
+                }
+            }
+
+
+
+            $data['context'] = count($contextMessages) ? implode(PHP_EOL, $contextMessages) : null;
+
+        } catch (Exception $error) {
+            Log::error('Failed to generate context for response.Error:'.$error);
+            $errors[] = 'Failed to generate context for response';
         }
 
         return new ServiceResponse($errors, $data);

@@ -6,6 +6,7 @@ use App\Events\ChatMessageCreated;
 use App\Models\Bot;
 use App\Models\Chat;
 use App\Models\ChatMessage;
+use App\Repositories\Embedding\EmbeddingService;
 use App\Repositories\Ollama\OllamaService;
 use App\Repositories\ServiceResponse;
 use Exception;
@@ -106,7 +107,9 @@ class ChatService
                 return new ServiceResponse($errors, ['success' => true]);
             }
 
-            $systemMessage = OllamaService::sendChatMessage($message->chat)->returnOrFail()->data['message'];
+            $context = EmbeddingService::generateContextForResponse($message)->returnOrFail()->data['context'];
+
+            $systemMessage = OllamaService::sendChatMessage($message->chat, $context)->returnOrFail()->data['message'];
 
 
             $chatMessage = ChatMessage::create([

@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Ollama;
 
-use App\Models\Bot;
 use App\Models\Chat;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -11,12 +10,14 @@ class OllamaLibrary
 {
 
     public string $apiUrl;
+    public string $embeddingModel;
 
     public function __construct(){
         $this->apiUrl = config('ollama.api_url');
+        $this->embeddingModel = config('ollama.embedding_model');
     }
 
-    public static function sendChatMessage(Chat $chat){
+    public static function sendChatMessage(Chat $chat, $context = null){
 
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', -1);
@@ -25,6 +26,13 @@ class OllamaLibrary
         $fullUrl = $api->apiUrl . 'chat';
 
 
+        $messages =  $chat->formatForChat();
+        if($context){
+            $messages[] = [
+                'role' => 'system',
+                'content' => 'Za genrisanje odgovora najprije pokušaj iskoristiti ovaj kontekst:' . $context
+            ];
+        }
 
         $data = [
             'model' => $chat->bot->model->value,
@@ -45,7 +53,7 @@ class OllamaLibrary
         $fullUrl = $api->apiUrl . 'embed';
 
         $data = [
-            'model' => 'mxbai-embed-large:latest',
+            'model' => $api->embeddingModel,
             'input' => $chunks,
         ];
 
@@ -61,7 +69,7 @@ class OllamaLibrary
         $fullUrl = $api->apiUrl . 'embed';
 
         $data = [
-            'model' => 'mxbai-embed-large:latest',
+            'model' => $api->embeddingModel,
             'input' => $text,
         ];
 

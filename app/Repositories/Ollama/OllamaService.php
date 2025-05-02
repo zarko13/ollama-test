@@ -4,6 +4,7 @@ namespace App\Repositories\Ollama;
 
 use App\Models\Bot;
 use App\Models\Chat;
+use App\Models\ChatMessage;
 use App\Repositories\ServiceResponse;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class OllamaService
 {
 
-    public static function sendChatMessage(Chat $chat){
+    public static function sendChatMessage(Chat $chat, $context = null){
 
         $errors = null;
         $data = [];
@@ -20,7 +21,9 @@ class OllamaService
             ini_set('max_execution_time', 0);
             ini_set('memory_limit', -1);
 
-            $response = OllamaLibrary::sendChatMessage($chat);
+
+
+            $response = OllamaLibrary::sendChatMessage($chat, $context);
             if(!$response['success']){
                 return new ServiceResponse(['Failed to send chat message'], $data);
             }

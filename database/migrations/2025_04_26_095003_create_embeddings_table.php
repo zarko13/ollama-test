@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('bot_id');
             $table->integer('index');
             $table->integer('type');
-            $table->vector('embedding', 1024);
+            $table->vector('embedding', config('ollama.vector_size'));
             $table->json('metadata');
             $table->timestamps();
             $table->softDeletes();
